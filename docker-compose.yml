@@ -1,10 +1,8 @@
-version: '3.8'
-
 services:
   nginx:
     image: nginx:latest
     ports:
-      - "80:80"
+      - "8080:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
@@ -17,7 +15,7 @@ services:
       context: ./auth-service
       dockerfile: Dockerfile
     ports:
-      - "5000:5000"
+      - "5001:5001"
     environment:
       - FLASK_ENV=development
 
@@ -26,7 +24,7 @@ services:
       context: ./user-service
       dockerfile: Dockerfile
     ports:
-      - "5001:5001"
+      - "5002:5002"
     environment:
       - FLASK_ENV=development
 
