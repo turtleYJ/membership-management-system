@@ -1,22 +1,136 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './App.css';
 
 function App() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const [token, setToken] = useState('');
+  const [userInfo, setUserInfo] = useState(null);
+  const [newPassword, setNewPassword] = useState('');
+
+  const handleRegister = async () => {
+    try {
+      const response = await axios.post('http://localhost:5001/auth/register', {
+        username,
+        password
+      });
+      setMessage(response.data.message);
+    } catch (error) {
+      setMessage(error.response.data.message);
+    }
+  };
+
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post('http://localhost:5001/auth/login', {
+        username,
+        password
+      });
+      console.log('Login response token:', response.data.token); // 디버깅 로그
+      setMessage('Logged in!');
+      setToken(response.data.token);
+    } catch (error) {
+      setMessage(error.response.data.message);
+    }
+  };
+
+  const fetchUserInfo = async () => {
+    console.log('Fetching user info with token:', token); // 디버깅 로그
+    try {
+      const response = await axios.get('http://localhost:5001/auth/user', {
+        headers: {
+          'x-access-token': token
+        }
+      });
+      setUserInfo(response.data);
+    } catch (error) {
+      setMessage('Failed to fetch user info');
+    }
+  };
+
+  const handleUpdatePassword = async () => {
+    try {
+      const response = await axios.put('http://localhost:5001/auth/user', {
+        password: newPassword
+      }, {
+        headers: {
+          'x-access-token': token
+        }
+      });
+      setMessage(response.data.message);
+    } catch (error) {
+      setMessage('Failed to update password');
+    }
+  };
+
+  const handleRecoverPassword = async () => {
+    try {
+      const response = await axios.post('http://localhost:5001/auth/recover', {
+        username,
+        new_password: newPassword
+      });
+      setMessage(response.data.message);
+    } catch (error) {
+      setMessage('Failed to recover password');
+    }
+  };
+
+  useEffect(() => {
+    if (token) {
+      fetchUserInfo();
+    }
+  }, [token]);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Auth Service</h1>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button onClick={handleRegister}>Register</button>
+        <button onClick={handleLogin}>Login</button>
+        <p>{message}</p>
+        {userInfo && (
+          <div>
+            <h2>User Info</h2>
+            <p>Username: {userInfo.username}</p>
+            <input
+              type="password"
+              placeholder="New Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <button onClick={handleUpdatePassword}>Update Password</button>
+          </div>
+        )}
+        <div>
+          <h2>Recover Password</h2>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="New Password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+          <button onClick={handleRecoverPassword}>Recover Password</button>
+        </div>
       </header>
     </div>
   );

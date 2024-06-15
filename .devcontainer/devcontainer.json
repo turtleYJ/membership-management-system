@@ -4,7 +4,8 @@
     "workspaceFolder": "/workspace",
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
     "settings": {
-        "python.pythonPath": "/usr/local/bin/python"
+        "python.pythonPath": "/usr/local/bin/python",
+        "terminal.integrated.shell.linux": "/bin/bash"
     },
     "extensions": [
         "ms-python.python"

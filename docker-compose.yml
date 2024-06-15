@@ -16,7 +16,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5001:5001"
-      - "5680:5680"
     volumes:
       - ./auth-service:/app
     environment:
@@ -33,7 +32,7 @@ services:
     ports:
       - "5002:5002"
     volumes:
-      - ./user-service:/app
+      - ./user-service:/membership/user-service
     environment:
       - FLASK_ENV=development
 
@@ -44,6 +43,6 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend:/app 
+      - ./frontend:/frontend
     environment:
       - NODE_ENV=development
