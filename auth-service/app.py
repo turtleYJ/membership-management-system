@@ -130,4 +130,5 @@ def recover_password():
     return jsonify({'message': 'Password recovered successfully!'}), 200
 
 if __name__ == '__main__':
+    app.logger.info("hello, auth-service!")
     app.run(debug=True, host='0.0.0.0', port=5001)
