@@ -4,7 +4,9 @@ WORKDIR /app
 
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
+RUN pip install debugpy
 
 COPY . .
 
-CMD ["flask", "run", "--host=0.0.0.0", "--port=5002"]
+# CMD ["flask", "run", "--host=0.0.0.0", "--port=5002"]
+CMD ["python", "app.py"]

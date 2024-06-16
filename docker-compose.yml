@@ -32,9 +32,13 @@ services:
     ports:
       - "5002:5002"
     volumes:
-      - ./user-service:/membership/user-service
+      - ./user-service:/app
     environment:
       - FLASK_ENV=development
+      - SECRET_KEY=d4f5e8b7c3d4e2f5a8c3b7d4e8f5c2b7e3f5d4c2a8b7e4f5
+      - DEBUG=True
+    command: >
+      flask run --host=0.0.0.0 --port=5002
 
   frontend:
     build:

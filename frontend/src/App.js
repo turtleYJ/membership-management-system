@@ -12,7 +12,7 @@ function App() {
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post('http://localhost:5001/auth/register', {
+      const response = await axios.post('/auth/register', {
         username,
         password
       });
@@ -24,11 +24,10 @@ function App() {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:5001/auth/login', {
+      const response = await axios.post('/auth/login', {
         username,
         password
       });
-      console.log('Login response token:', response.data.token); // 디버깅 로그
       setMessage('Logged in!');
       setToken(response.data.token);
     } catch (error) {
@@ -37,9 +36,8 @@ function App() {
   };
 
   const fetchUserInfo = async () => {
-    console.log('Fetching user info with token:', token); // 디버깅 로그
     try {
-      const response = await axios.get('http://localhost:5001/auth/user', {
+      const response = await axios.get('/user', {
         headers: {
           'x-access-token': token
         }
@@ -52,7 +50,7 @@ function App() {
 
   const handleUpdatePassword = async () => {
     try {
-      const response = await axios.put('http://localhost:5001/auth/user', {
+      const response = await axios.put('/user', {
         password: newPassword
       }, {
         headers: {
@@ -67,7 +65,7 @@ function App() {
 
   const handleRecoverPassword = async () => {
     try {
-      const response = await axios.post('http://localhost:5001/auth/recover', {
+      const response = await axios.post('/user/recover', {
         username,
         new_password: newPassword
       });

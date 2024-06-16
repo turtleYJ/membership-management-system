@@ -1,0 +1,17 @@
+{
+    "name": "User Service Dev Container",
+    "dockerFile": "../Dockerfile",
+    "context": "..",
+    "workspaceFolder": "/Workspaces",
+    "settings": {
+        "python.pythonPath": "/usr/local/bin/python",
+        "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+    ],
+    "postCreateCommand": "pip install -r requirements.txt",
+    "remoteUser": "root",
+    "forwardPorts": [5002]
+}
